@@ -12,7 +12,7 @@ p {
   margin: 5px 0;
 }
 textarea {
-  width: 80%;
+  width: 60%;
   height: 80px;
 }
 button {
@@ -20,11 +20,11 @@ button {
   margin: 10px 0;
 }
 .top-bar {
-  background-color: skyblue;
+  background-color: rgb(207, 102, 57);
   padding: 0 40px;
 }
 .main {
-  background-color: #F6F6EF;
+  background-color: #a6a69d;
   padding: 10px 40px;
 }
 .comments {
@@ -50,8 +50,8 @@ button {
 .nav{
   display:inline-block;
 }
-#button-login{
-  margin-left: 1000px;
+.button-login{
+  display:inline-block;
   color:white;
   font-size: large;
   padding:2px;
