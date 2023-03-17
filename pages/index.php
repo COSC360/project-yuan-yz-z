@@ -2,6 +2,8 @@
     <link rel="stylesheet" href="../css/index.css">
 </head>
 <body>
+    
+    <?php include '../mysql/connection.php'; ?>
     <div class="top-bar">
         <h1 class="nav">
             Forum
@@ -12,7 +14,16 @@
     <div class="main">
         <ol>
         </ol>
+        <form action="../mysql/newThread.php" method="POST">
+            <p>comment</p>
+            <input type="text" name="title">
+            <p>content</p>
+            <textarea name="content" id="" cols="30" rows="10"></textarea>
+            <button for="submit"> Submit </button>
+        </form>
+
     </div>
+
     <script src="data.js"></script>
     <script>
         console.log(threads);
