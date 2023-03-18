@@ -1,7 +1,3 @@
-Team members:
-Yuan Zhu 60578473
-Shukang Wang 90108382
-
 Project descriptions and details
 
 Description:
@@ -40,3 +36,27 @@ Simple discussion (topics) grouping and display
 Navigation breadcrumb strategy (i.e. user can determine where they are in threads)
 Error handling (bad navigation)
 Beautiful styling
+
+mysql stuff
+
+create table users (
+id int AUTO_INCREMENT,
+name varchar(100),
+email varchar(100),
+admin int,
+userName varchar(100),
+pass varchar(1000),
+primary KEY(id)
+);
+
+create table thread (
+id int AUTO_INCREMENT,
+userId int,
+authorName varchar(100),
+content varchar(100),
+title varchar(50),
+primary key (id),
+CONSTRAINT fk_users FOREIGN KEY (userId)  
+ REFERENCES users(id)  
+ ON DELETE CASCADE
+);

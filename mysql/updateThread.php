@@ -1,8 +1,8 @@
 <?php
 
-if (empty($_POST["name"])) {
-    die("Name is required");
-}
+// if (empty($_POST["name"])) {
+//     die("Name is required");
+// }
 
 // if ( ! filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
 //     die("Valid email is required");
@@ -24,12 +24,12 @@ if (empty($_POST["name"])) {
 //     die("Passwords must match");
 // }
 
-$password_hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
+// $password_hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
 $mysqli = require __DIR__ . "/connection.php";
 
-$sql = "INSERT INTO users (name, email, admin, userName, password)
-        VALUES (?, ?, ?, ?, ?)";
+$sql = "UPDATE users set email=?, userName=?
+  where id=?" ;
         
 $stmt = $mysqli->stmt_init();
 
@@ -37,16 +37,13 @@ if ( ! $stmt->prepare($sql)) {
     die("SQL error: " . $mysqli->error);
 }
 $admin=0;
-$stmt->bind_param("ssiss",
-                  $_POST["name"],
-                  $_POST["email"],
-                  $admin,
+$stmt->bind_param("ssi",
+                  $_POST['email'],
                   $_POST['userName'],
-                  $password_hash);
+                  $_GET['userId']);
                   
 if ($stmt->execute()) {
-
-    header("Location: ../pages/index.php");
+    header("Location: ../pages/profile.php?success=yes");
     exit;
     
 } else {

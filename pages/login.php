@@ -5,7 +5,7 @@ $is_invalid = false;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     
-    $mysqli = require __DIR__ . "/connection.php";
+    $mysqli = require __DIR__ . "/../mysql/connection.php";
     
     $sql = sprintf("SELECT * FROM users
                     WHERE email = '%s'",
@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $user = $result->fetch_assoc();
     
     if ($user) {
-        if (password_verify($_POST["password"], $user["password"])) {
+        if (password_verify($_POST["password"], $user["pass"])) {
             
             session_start();
             
@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             
             $_SESSION["user_id"] = $user["id"];
             
-            echo($user)
+            // echo($user)
             header("Location: index.php");
             exit;
         }
@@ -42,21 +42,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="stylesheet" href="../css/login.css">
   </head>
   <body>
-    <div class="container right-panel-active">
+    <?php if ($is_invalid): ?>
+        <em>Invalid login</em>
+    <?php endif; ?>
+    <div class="container">
 
       <div class="container__form container--signin">
-        <form action="index.php" class="form" id="form2">
+        <form method="post" class="form" id="form2">
           <h2 class="form__title">Sign In</h2>
-          <input type="email" placeholder="Email" class="input" required/>
-          <input type="password" placeholder="Password" class="input" required/>
-          <a href="index.php" class="link">Forgot your password?</a>
+          <input type="email" name="email" placeholder="Email" class="input" required/>
+          <input type="password" name="password" placeholder="Password" class="input" required/>
+          <!-- <a href="index.php" class="link">Forgot your password?</a> -->
           <button for="submit" class="btn">Sign in</button>
         </form>
       </div>
-    
-      <!-- Overlay -->
-      <div class="container__overlay">
-      </div>
+  
     </div>
   </body>
 </html>

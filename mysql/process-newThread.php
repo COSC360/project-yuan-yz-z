@@ -1,21 +1,9 @@
 <?php
 
-session_start();
+// if (empty($_POST["name"])) {
+//     die("Name is required");
+// }
 
-if (isset($_SESSION["user_id"])) {
-    
-    $mysqli = require __DIR__ . "/../mysql/connection.php";
-    
-    $sql = "SELECT * FROM users
-            WHERE id = {$_SESSION["user_id"]}";
-            
-    $result = $mysqli->query($sql);
-    
-    $user = $result->fetch_assoc();
-}
-if (!isset($user)){
-  die("user not found, can't add new thread");
-}
 // if ( ! filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
 //     die("Valid email is required");
 // }
@@ -36,10 +24,12 @@ if (!isset($user)){
 //     die("Passwords must match");
 // }
 
+$password_hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
+
 $mysqli = require __DIR__ . "/connection.php";
 
-$sql = "INSERT INTO thread (userId, authorName, content, title)
-        VALUES (?, ?, ?, ?)";
+$sql = "INSERT INTO users (name, email, admin, userName, pass)
+        VALUES (?, ?, ?, ?, ?)";
         
 $stmt = $mysqli->stmt_init();
 
@@ -47,11 +37,12 @@ if ( ! $stmt->prepare($sql)) {
     die("SQL error: " . $mysqli->error);
 }
 $admin=0;
-$stmt->bind_param("isss",
-                  $_SESSION["user_id"],
-                  $user["name"],
-                  $_POST['content'],
-                  $_POST["title"],);
+$stmt->bind_param("ssiss",
+                  $_POST["name"],
+                  $_POST["email"],
+                  $admin,
+                  $_POST['userName'],
+                  $password_hash);
                   
 if ($stmt->execute()) {
 

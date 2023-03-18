@@ -39,7 +39,7 @@ button {
 .bottom, .top-comment {
   display: flex;
   color: grey;
-  font-size: 12px;
+  font-size: 18px;
 }
 .timestamp {
   padding-right: 10px;
