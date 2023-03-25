@@ -15,8 +15,11 @@ if (isset($_SESSION["user_id"])) {
 }
 
 ?>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/index.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
 <body>
 
@@ -29,9 +32,10 @@ if (isset($_SESSION["user_id"])) {
             <a href="profile.php" class="button-login"> profile</a>
             <a href="../mysql/logout.php" class="nav, button-login"> logout</a>
             </div>
-                <div class="main">
+                <div style="float: right; background-color: #4f4f25; padding:10px 20px;">
                     <!-- change the form to invisible, only display when user clicks new thread. -->
                     <form action="../mysql/newThread.php" method="POST">
+                        <h5>New Post</h5>
                         <p>title</p>
                         <input type="text" name="title">
                         <p>content</p>
@@ -44,45 +48,53 @@ if (isset($_SESSION["user_id"])) {
             </div>
         <?php endif; ?>
             <div class="main">
-            <?php
-            $mysqli = require __DIR__ . "/../mysql/connection.php";
-            
-            $sql = "SELECT * FROM thread";
-                    
-            $result = $mysqli->query($sql);
-
-            echo "<ol>";
-            while ($row = mysqli_fetch_assoc($result)) {
-                // add list item to doc
-                echo "<li class='row'>";
-                echo "<a class='title' href='thread.php?thread=".$row["id"]."'> <h4>".$row["title"]."</h4></a>";
-                echo "</li>";
-            }
-            echo "</ol>";
-            ?>
+            <form id="form" action="?" method="post"> 
+                <input type="search" id="query" name="q" placeholder="Search...">
+            <button>Search</button>
+            </form>
+            <div id="threadDiv">
+                <?php
+                $mysqli = require __DIR__ . "/../mysql/connection.php";
+                
+                $sql = "SELECT * FROM thread";
+                
+                $result = $mysqli->query($sql);
+                $threadCount=0;
+                echo "<ol>";
+                if (isset($_POST["q"])){
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        // add list item to doc
+                        if ($row["title"]!=$_POST["q"]){
+                            continue;
+                        }
+                        echo "<li class='row'>";
+                        echo "<a class='title' href='thread.php?thread=".$row["id"]."'> <h4>".$row["title"]."</h4></a>";
+                        echo "</li>";
+                        $threadCount++;
+                    }
+                }
+                else{
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        // add list item to doc
+                        echo "<li class='row'>";
+                        echo "<a class='title' href='thread.php?thread=".$row["id"]."'> <h4>".$row["title"]."</h4></a>";
+                        echo "</li>";
+                        $threadCount++;
+                    }
+                }
+                if ($threadCount==0){
+                    echo "<h3> No threads related to the search found </h3>";
+                }
+                echo "</ol>";
+                ?>
             </div>
-    <script>
-
-        // var container = document.querySelector('ol');
-        // for (let thread of threads) {
-        //     var html = `
-        //     <li class="row">
-        //         <a href="thread.html?${thread.id}">
-        //             <h4 class="title">
-        //                 ${thread.title}
-        //             </h4>
-        //             <div class="bottom">
-        //                 <p class="timestamp">
-        //                     ${new Date(thread.date).toLocaleString()}
-        //                 </p>
-        //                 <p class="comment-count">
-        //                     ${thread.comments.length} comments
-        //                 </p>
-        //             </div>
-        //         </a>
-        //     </li>
-        //     `
-        //     container.insertAdjacentHTML('beforeend', html);
-        // }
-    </script>
+        </div>
+        <script>
+            setInterval(function() {
+                console.log("refreshing");
+                $("#threadDiv").load(location.href + " #threadDiv");
+            }, 5000);
+            
+        </script>
 </body>
+</html>

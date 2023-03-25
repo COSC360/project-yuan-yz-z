@@ -9,7 +9,7 @@
 	--button-radius: 0.7rem;
 
 	/* SIZES */
-	--max-width: 758px;
+	--max-width: 300px;
 	--max-height: 420px;
 
 	font-size: 16px;
@@ -43,46 +43,30 @@ body {
 }
 
 .container {
-	background-color: var(--white);
+	background-color: white;
 	border-radius: var(--button-radius);
 	box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.25),
 		0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
 	height: var(--max-height);
 	overflow: hidden;
 	position: relative;
-	width: 100%;
+	width: 500px;
 }
 
 .container__form {
 	height: 100%;
+	background-color: white;
 	position: absolute;
 	top: 0;
-
-}
-
-.container--signin {
 	width: 100%;
-	z-index: 2;
 }
 
 
 .container.right-panel-active .container__overlay {
-	transform: translateX(-100%);
+	transform: translateX(-50%);
 }
 
-.overlay {
-	background-color: var(--lightblue);
-	background-attachment: fixed;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	height: 100%;
-	left: -100%;
-	position: relative;
-	transform: translateX(0);
-	transition: transform 0.6s ease-in-out;
-	width: 200%;
-}
+
 
 .overlay__panel {
 	align-items: center;

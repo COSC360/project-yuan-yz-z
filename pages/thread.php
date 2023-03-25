@@ -17,6 +17,14 @@
         $user = $result->fetch_assoc();
     }
 
+    $sqlComments= "SELECT * FROM comment WHERE threadId={$threadId}";
+    $resultComments = $mysqli->query($sqlComments)
+    // while ($row = mysqli_fetch_assoc($result)) {
+    //     // add list item to doc
+    //     echo "<li class='row'>";
+    //     echo "<a class='title' href='thread.php?thread=".$row["id"]."'> <h4>".$row["title"]."</h4></a>";
+    //     echo "</li>";
+    // }
 ?>
 <head>
     <link rel="stylesheet" href="../css/thread.css">
@@ -28,7 +36,7 @@
         </h1>
     <?php if (isset($user)): ?>
         <p class="nav">Hello <?= htmlspecialchars($user["name"]) ?></p>
-        <a href="profile.php" class="nav"> profile</a>
+        <a href="profile.php" class="nav , button-login"> profile</a>
         <a href="../mysql/logout.php" class="nav, button-login"> logout</a>
     </div>
     <?php else: ?>
@@ -46,11 +54,19 @@
                 echo "<h2 class='title'>".$thread["title"]."</h2>";
                 echo "<p>".$thread["content"]."</p>";
                 echo "<div class='bottom'> by ".$thread["authorName"] ."</div>";
-                ?>
+                while ($row = mysqli_fetch_assoc($resultComments)) {
+                    // add list item to doc
+                    echo "<div class='comment'> <div class='top-comment'>";
+                    echo "<p class='user'>".$row["authorName"]."</p></div>";
+                    echo "<div class='comment-content'>".$row["content"]."</div></div>";
+                }
+            ?>
             </div>
                 <?php if (isset($user)): ?>
-                        <textarea></textarea>
-                        <button>add comment</button>
+                    <form action="../mysql/newComment.php?threadId=<?php echo $threadId?>" method="POST">
+                        <textarea name="comment" required></textarea>
+                        <button for="submit">add comment</button>
+                    </form>
                     
                 <?php endif; ?>
                 <div class="comments">

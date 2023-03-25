@@ -46,13 +46,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <em>Invalid login</em>
     <?php endif; ?>
     <div class="container">
-
-      <div class="container__form container--signin">
+      <div class="container__form container--signin" style="width:100%">
         <form method="post" class="form" id="form2">
           <h2 class="form__title">Sign In</h2>
           <input type="email" name="email" placeholder="Email" class="input" required/>
           <input type="password" name="password" placeholder="Password" class="input" required/>
-          <!-- <a href="index.php" class="link">Forgot your password?</a> -->
+          <a href="signup.php" class="link">No Account? Sign up here</a>
           <button for="submit" class="btn">Sign in</button>
         </form>
       </div>
