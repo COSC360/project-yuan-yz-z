@@ -73,3 +73,6 @@ create table comment(
     foreign key(threadId)
     REFERENCES thread(id) on DELETE CASCADE
     );
+
+alter table users
+add profileImage blob;

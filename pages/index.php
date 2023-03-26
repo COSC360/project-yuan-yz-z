@@ -6,8 +6,11 @@ if (isset($_SESSION["user_id"])) {
     
     $mysqli = require __DIR__ . "/../mysql/connection.php";
     
-    $sql = "SELECT * FROM users
-            WHERE id = {$_SESSION["user_id"]}";
+    // $sql = "SELECT * FROM users
+    //         WHERE id = {$_SESSION["user_id"]}";
+    $sql = "SELECT *, HEX(profileImage) as profileImage FROM users
+    WHERE id = {$_SESSION["user_id"]}";
+
             
     $result = $mysqli->query($sql);
     
@@ -29,6 +32,10 @@ if (isset($_SESSION["user_id"])) {
         </h1>
         <?php if (isset($user)): ?>
             <p class="nav">Hello <?= htmlspecialchars($user["name"]) ?></p>
+            <div class="nav">
+                <img src="data:image/jpeg;base64,<?= base64_encode(hex2bin($user['profileImage'])) ?>" alt="Profile Image"  width="30">
+            </div>
+
             <a href="profile.php" class="button-login"> profile</a>
             <a href="../mysql/logout.php" class="nav, button-login"> logout</a>
             </div>
