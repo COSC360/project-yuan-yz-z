@@ -43,8 +43,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['image']))
         exit();
     }
 
-    if($file_size > 2097152) {
-        echo 'File size must be less than 2 MB';
+    // if($file_size > 2097152) {
+    //     echo 'File size must be less than 2 MB';
+    //     exit();
+    // }
+    if($file_size > 64000) {
+        echo 'File size must be less than 64 kb';
         exit();
     }
 }
