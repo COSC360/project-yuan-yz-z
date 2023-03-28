@@ -5,7 +5,7 @@
     $threadId= (int) $_GET["thread"];
     $mysqli = require __DIR__ . "/../mysql/connection.php";
     $sqlThread= "SELECT * FROM thread WHERE id={$threadId}";
-    $resultThread = $mysqli->query($sqlThread);
+    $resultThread = mysqli_query($mysqli,$sqlThread);
     $thread= $resultThread->fetch_assoc();
     if (isset($_SESSION["user_id"])) {
         
@@ -24,7 +24,7 @@
     }
 
     $sqlComments= "SELECT * FROM comment WHERE threadId={$threadId}";
-    $resultComments = $mysqli->query($sqlComments)
+    $resultComments = mysqli_query($mysqli,$sqlComments);
     // while ($row = mysqli_fetch_assoc($result)) {
     //     // add list item to doc
     //     echo "<li class='row'>";

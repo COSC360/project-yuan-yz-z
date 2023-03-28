@@ -12,7 +12,7 @@ if (isset($_SESSION["user_id"])) {
     $sql = "SELECT * FROM users
             WHERE id = {$_SESSION["user_id"]}";
             
-    $result = $mysqli->query($sql);
+    $result = mysqli_query($mysqli,$sql);
     
     $user = $result->fetch_assoc();
 }

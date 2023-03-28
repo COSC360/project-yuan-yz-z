@@ -7,11 +7,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $mysqli = require __DIR__ . "/../mysql/connection.php";
     
-    $sql = sprintf("SELECT * FROM users
-                    WHERE email = '%s'",
-                   $mysqli->real_escape_string($_POST["email"]));
+    $sql = "SELECT * FROM users
+                    WHERE email = '".$_POST["email"]."'";
     
-    $result = $mysqli->query($sql);
+    $result = mysqli_query($mysqli,$sql);
     
     $user = $result->fetch_assoc();
     

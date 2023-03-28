@@ -9,7 +9,7 @@
       $sql = "SELECT * FROM users
               WHERE id = {$_SESSION["user_id"]}";
               
-      $result = $mysqli->query($sql);
+      $result = mysqli_query($mysqli,$sql);
       
       $user = $result->fetch_assoc();
   }
@@ -26,7 +26,7 @@
   $stmt = $mysqli->stmt_init();
 
   if ( ! $stmt->prepare($sql)) {
-      die("SQL error: " . $mysqli->error);
+      die("SQL error: " );
   }
   $admin=0;
   $stmt->bind_param("isss",
@@ -42,10 +42,10 @@
       
   } else {
       
-      if ($mysqli->errno === 1062) {
+      if (mysqli_error($mysqli) === 1062) {
           die("email already taken");
       } else {
-          die($mysqli->error . " " . $mysqli->errno);
+          die(mysqli_error($mysqli));
       }
   }
 
