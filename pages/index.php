@@ -98,7 +98,7 @@ if (isset($_SESSION["user_id"])) {
                         echo "<li class='row, title'>";
                         echo "<a class='title' href='thread.php?thread=".$row["id"]."'> ".$row["title"]."</a>";
                         if ($admin==1){
-                            echo "<button id='btn' value=".$user["id"]."> Delete </button>";
+                            echo "<button id='btn' value=".$row["id"]."> Delete </button>";
                         }
                         echo "</li>";
                         $threadCount++;
@@ -128,8 +128,7 @@ if (isset($_SESSION["user_id"])) {
                 $.post('../mysql/delete.php', {
                     btnValue: btnValue
                 }, (response) => {
-                    // response from PHP back-end
-                    console.log(response);
+                    alert("Thread deleted");
                 });
             });
         </script>
