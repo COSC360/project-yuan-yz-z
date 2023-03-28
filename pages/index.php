@@ -73,7 +73,7 @@ if (isset($_SESSION["user_id"])) {
                 
                 $sql = "SELECT * FROM thread";
                 
-                $result = $mysqli->query($sql);
+                $result = mysqli_query($mysqli,$sql);
                 $threadCount=0;
                 $admin=0;
                 if (isset($user)){
