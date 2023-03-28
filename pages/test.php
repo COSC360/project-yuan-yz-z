@@ -1,33 +1,19 @@
 <?php
 
-error_reporting(E_ALL);
 
-// in_set('display_errors', '1');
-
+//ini_set('display_errors', '1');
+//ini_set('display_startup_errors', '1');
+//error_reporting(E_ALL);
 // $host = "localhost";
 // $dbname = "cosc360";
-// $username = "root";
-// $password = "";
-$host = "localhost";
-$dbname = "db_60578473";
-$username = "60578473";
-$password = "60578473";
-$mysqli = new mysqli(hostname: $host,
-                     username: $username,
-                     password: $password,
-                     database: $dbname);
-                     
-if ($mysqli->connect_errno) {
-    die("Connection error: " . $mysqli->connect_error);
+$link = mysqli_connect("localhost", "60578473", "60578473", "db_60578473");
+
+// Check connection
+if($link === false){
+    die("ERROR: Could not connect. " . mysqli_connect_error());
 }
 
-// return $mysqli;
-
-
-$sql = "SELECT id FROM users";
-
-        
-$result = $mysqli->query($sql);
-
-$user = $result->fetch_assoc();
-print_r($user);
+// Attempt select query execution
+$sql = "SELECT * FROM users";
+$result = mysqli_query($link, $sql);
+print_r($result);

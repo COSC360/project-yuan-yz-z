@@ -14,7 +14,8 @@ if (isset($_SESSION["user_id"])) {
     $user = $result->fetch_assoc();
 }
 if (!isset($user)){
-  die("user not found, can't add new thread");
+    echo "<a href='index.php'> Go back to home </a>";
+    die("user not found, can't add new thread");
 }
 
 $mysqli = require __DIR__ . "/connection.php";

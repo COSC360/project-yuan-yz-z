@@ -15,6 +15,11 @@ p {
   background-color: rgb(207, 102, 57);
   padding: 0 40px;
 }
+
+.title {
+  padding: 10px;
+}
+
 .main {
   background-color: #a6a69d;
   padding: 10px 15px;

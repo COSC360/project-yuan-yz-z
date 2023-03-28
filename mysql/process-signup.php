@@ -1,4 +1,10 @@
 <?php
+if (!isset($_POST["name"],$_POST["userName"],$_POST["email"],$_POST["password"])){
+    die("Some variables are not set");
+  }
+  if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    die("This is php for Post");
+  }
 if ( ! filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
     die("Valid email is required");
 }

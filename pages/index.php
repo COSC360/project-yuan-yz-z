@@ -22,13 +22,21 @@ if (isset($_SESSION["user_id"])) {
 <html lang="en">
 <head>
     <link rel="stylesheet" href="../css/index.css" type="text/css">
+    <style>
+        a:hover {
+        background-color: yellow;
+        }
+        .title{
+            padding:5px;
+        }
+</style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
 <body>
 
     <div class="top-bar">
         <h1 class="nav">
-            Forum
+            Forum/Threads
         </h1>
         <?php if (isset($user)): ?>
             <p class="nav">Hello <?= htmlspecialchars($user["name"]) ?></p>
@@ -67,6 +75,10 @@ if (isset($_SESSION["user_id"])) {
                 
                 $result = $mysqli->query($sql);
                 $threadCount=0;
+                $admin=0;
+                if (isset($user)){
+                    $admin= $user["admin"];
+                }
                 echo "<ol>";
                 if (isset($_POST["q"])){
                     while ($row = mysqli_fetch_assoc($result)) {
@@ -75,7 +87,7 @@ if (isset($_SESSION["user_id"])) {
                             continue;
                         }
                         echo "<li class='row'>";
-                        echo "<a class='title' href='thread.php?thread=".$row["id"]."'> <h4>".$row["title"]."</h4></a>";
+                        echo "<a class='title' href='thread.php?thread=".$row["id"]."'>" .$row["title"]."</a>";
                         echo "</li>";
                         $threadCount++;
                     }
@@ -83,8 +95,11 @@ if (isset($_SESSION["user_id"])) {
                 else{
                     while ($row = mysqli_fetch_assoc($result)) {
                         // add list item to doc
-                        echo "<li class='row'>";
-                        echo "<a class='title' href='thread.php?thread=".$row["id"]."'> <h4>".$row["title"]."</h4></a>";
+                        echo "<li class='row, title'>";
+                        echo "<a class='title' href='thread.php?thread=".$row["id"]."'> ".$row["title"]."</a>";
+                        if ($admin==1){
+                            echo "<button id='btn' value=".$user["id"]."> Delete </button>";
+                        }
                         echo "</li>";
                         $threadCount++;
                     }
@@ -101,7 +116,22 @@ if (isset($_SESSION["user_id"])) {
                 console.log("refreshing");
                 $("#threadDiv").load(location.href + " #threadDiv");
             }, 5000);
+            let btn = document.getElementById("btn");
+ 
+            // Adding event listener to button
+            btn.addEventListener("click", () => {
             
+                // Fetching Button value
+                let btnValue = btn.value;
+                
+                // jQuery Ajax Post Request
+                $.post('../mysql/delete.php', {
+                    btnValue: btnValue
+                }, (response) => {
+                    // response from PHP back-end
+                    console.log(response);
+                });
+            });
         </script>
 </body>
 </html>

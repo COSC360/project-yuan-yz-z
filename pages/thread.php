@@ -38,7 +38,9 @@
 <body>
     <div class="top-bar">
         <h1 class="nav">
-            Forum
+            Forum/Threads/<?php if (!$thread){
+                    die("<h1> Error retrieving thread information</h1>");
+                } echo $thread["title"]; ?>
         </h1>
     <?php if (isset($user)): ?>
         <p class="nav">Hello <?= htmlspecialchars($user["name"]) ?></p>

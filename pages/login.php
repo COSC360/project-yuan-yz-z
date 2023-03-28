@@ -3,7 +3,7 @@
 
 $is_invalid = false;
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $mysqli = require __DIR__ . "/../mysql/connection.php";
     
