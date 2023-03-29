@@ -24,7 +24,7 @@ if (isset($_SESSION["user_id"])) {
     <link rel="stylesheet" href="../css/index.css" type="text/css">
     <style>
         a:hover {
-        background-color: yellow;
+        background-color: green;
         }
         .title{
             padding:5px;

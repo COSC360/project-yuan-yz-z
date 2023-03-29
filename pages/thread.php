@@ -44,7 +44,8 @@
         </h1>
     <?php if (isset($user)): ?>
         <p class="nav">Hello <?= htmlspecialchars($user["name"]) ?></p>
-        <?php
+        <div class="nav">
+            <?php
                 // Output the profile image next to the username
                 if (isset($profileImage)) {
                     echo '<img src="data:'.$profileImageType.';base64,'.base64_encode($user['profileImage']).'" alt="Profile Image" width="30">';
@@ -52,6 +53,7 @@
                 ?>
                 <!-- <?= htmlspecialchars($user["name"]) ?> -->
             </p>
+        </div>
         <a href="profile.php" class="nav , button-login"> profile</a>
         <a href="../mysql/logout.php" class="nav, button-login"> logout</a>
     </div>

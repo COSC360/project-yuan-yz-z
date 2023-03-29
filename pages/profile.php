@@ -15,6 +15,12 @@ if (isset($_SESSION["user_id"])) {
     $result = mysqli_query($mysqli,$sql);
     
     $user = $result->fetch_assoc();
+
+    $profileImage = imagecreatefromstring($user['profileImage']);
+
+    // Get the MIME type of the profileImage
+    $profileImageInfo = getimagesizefromstring($user['profileImage']);
+    $profileImageType = $profileImageInfo['mime'];
 }
 ?>
 <!DOCTYPE html>
@@ -34,6 +40,16 @@ if (isset($_SESSION["user_id"])) {
         </h1>
     <?php if (isset($user)): ?>
         <p class="nav">Hello <?= htmlspecialchars($user["name"]) ?></p>
+        <div class="nav">
+            <?php
+                // Output the profile image next to the username
+                if (isset($profileImage)) {
+                    echo '<img src="data:'.$profileImageType.';base64,'.base64_encode($user['profileImage']).'" alt="Profile Image" width="30">';
+                }
+                ?>
+                <!-- <?= htmlspecialchars($user["name"]) ?> -->
+            </p>
+        </div>
         <a href="index.php" class="nav, button-login"> Go to Homepage</a>
         <a href="../mysql/logout.php" class="nav, button-login"> logout</a>
     </div>
@@ -41,13 +57,16 @@ if (isset($_SESSION["user_id"])) {
         <a href="login.php" class="nav, button-login"> login</a>
     </div>
     <?php endif; ?>
-    <form action="../mysql/updateThread.php?userId=<?php echo $user["id"]?>" method="post">
+    <form action="../mysql/updateThread.php?userId=<?php echo $user["id"]?>" method="post" enctype="multipart/form-data">
       <div class="container">
         <label for="uname"><b>Change User Name</b></label>
         <input type="text" name="userName" placeholder="Enter new user name" >
     
         <label for="psw"><b>Change email</b></label>
         <input type="text" name="email" placeholder="Enter new Email" >
+
+        <label for="img"><b>Select profile image:<b></label>
+        <input type="file" id="img" name="image" accept="image/*">
     
         <button id="submit" type="submitButton">Submit</button>
       </div>
