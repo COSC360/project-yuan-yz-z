@@ -65,8 +65,8 @@ if (isset($_SESSION["user_id"])) {
         <label for="psw"><b>Change email</b></label>
         <input type="text" name="email" placeholder="Enter new Email" >
 
-        <label for="img"><b>Select profile image:<b></label>
-        <input type="file" id="img" name="image" accept="image/*">
+        <!-- <label for="img"><b>Select profile image:<b></label>
+        <input type="file" id="img" name="image" accept="image/*"> -->
     
         <button id="submit" type="submitButton">Submit</button>
       </div>

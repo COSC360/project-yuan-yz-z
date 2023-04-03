@@ -75,7 +75,7 @@
                 while ($row = mysqli_fetch_assoc($resultComments)) {
                     // add list item to doc
                     echo "<div class='comment'> <div class='top-comment'>";
-                    echo "<p class='user'>".$row["authorName"]."</p></div>";
+                    echo "<p class='user'> by ".$row["authorName"]."</p></div>";
                     echo "<div class='comment-content'>".$row["content"]."</div></div>";
                 }
             ?>
