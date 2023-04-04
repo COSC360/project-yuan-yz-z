@@ -24,7 +24,11 @@ if (isset($_SESSION["user_id"])) {
     <link rel="stylesheet" href="../css/index.css" type="text/css">
     <style>
         a:hover {
+<<<<<<< Updated upstream
         background-color: green;
+=======
+        background-color: yellow;
+>>>>>>> Stashed changes
         }
         .title{
             padding:5px;
@@ -98,7 +102,7 @@ if (isset($_SESSION["user_id"])) {
                         echo "<li class='row, title'>";
                         echo "<a class='title' href='thread.php?thread=".$row["id"]."'> ".$row["title"]."</a>";
                         if ($admin==1){
-                            echo "<button id='btn' value=".$row["id"]."> Delete </button>";
+                            echo "<button id='btn' value=".$user["id"]."> Delete </button>";
                         }
                         echo "</li>";
                         $threadCount++;
@@ -128,7 +132,12 @@ if (isset($_SESSION["user_id"])) {
                 $.post('../mysql/delete.php', {
                     btnValue: btnValue
                 }, (response) => {
+<<<<<<< Updated upstream
                     alert("Thread deleted");
+=======
+                    // response from PHP back-end
+                    console.log(response);
+>>>>>>> Stashed changes
                 });
             });
         </script>
