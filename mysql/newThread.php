@@ -20,8 +20,8 @@ if (!isset($user)){
 
 $mysqli = require __DIR__ . "/connection.php";
 
-$sql = "INSERT INTO thread (userId, authorName, content, title)
-        VALUES (?, ?, ?, ?)";
+$sql = "INSERT INTO thread (userId, authorName, content, title, createdAt)
+        VALUES (?, ?, ?, ?, NOW())";
         
 $stmt = $mysqli->stmt_init();
 

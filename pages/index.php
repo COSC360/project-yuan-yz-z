@@ -92,6 +92,7 @@ if (isset($_SESSION["user_id"])) {
                         }
                         echo "<li class='row'>";
                         echo "<a class='title' href='thread.php?thread=".$row["id"]."'>" .$row["title"]."</a>";
+                        echo "<div class='comment'> <p> created at:".$row["createAt"]."</p></div>";
                         echo "</li>";
                         $threadCount++;
                     }
