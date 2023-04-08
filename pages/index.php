@@ -24,15 +24,32 @@ if (isset($_SESSION["user_id"])) {
     <link rel="stylesheet" href="../css/index.css" type="text/css">
     <style>
         a:hover {
-<<<<<<< Updated upstream
-        background-color: green;
-=======
         background-color: yellow;
->>>>>>> Stashed changes
         }
         .title{
             padding:5px;
         }
+        .button {
+            background-color: #CA472B; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            border-radius: 5px;
+            }
+        textarea {
+            margin-top: 20px;
+            width: 100%;
+            height: 70px;
+            border-radius: 3px;
+            border: 3px solid #11122b;
+            font-family: inherit;
+            color: inherit;
+            transition: all 0.3s;
+            }
 </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
@@ -51,7 +68,7 @@ if (isset($_SESSION["user_id"])) {
             <a href="profile.php" class="button-login"> profile</a>
             <a href="../mysql/logout.php" class="nav, button-login"> logout</a>
             </div>
-                <div style="float: right; background-color: #4f4f25; padding:10px 20px;">
+                <div style="float: right; background-color: #F06446; border-radius: 10px; padding:10px 20px;">
                     <!-- change the form to invisible, only display when user clicks new thread. -->
                     <form action="../mysql/newThread.php" method="POST">
                         <h5>New Post</h5>
@@ -59,7 +76,7 @@ if (isset($_SESSION["user_id"])) {
                         <input type="text" name="title">
                         <p>content</p>
                         <textarea name="content" id="" cols="30" rows="10"></textarea>
-                        <button for="submit"> Submit </button>
+                        <button class="button" for="submit"> Submit </button>
                     </form>
                 </div>
             <?php else: ?>
@@ -83,16 +100,28 @@ if (isset($_SESSION["user_id"])) {
                 if (isset($user)){
                     $admin= $user["admin"];
                 }
-                echo "<ol>";
+                echo "<ol class='content'>";
                 if (isset($_POST["q"])){
                     while ($row = mysqli_fetch_assoc($result)) {
                         // add list item to doc
                         if ($row["title"]!=$_POST["q"]){
                             continue;
                         }
+                        // $sqlComment="SELECT count(threadId) FROM comment where threadId='".$row["id"]."' group by threadId";
+                        // $result = mysqli_query($mysqli,$sql);
+                        // print_r( $result);
+                        $sqlComment="SELECT count(threadId) as num  FROM comment where threadId='".$row["id"]."'";
+                        $rs = mysqli_query($mysqli,$sqlComment);
+                        $yeah= mysqli_fetch_assoc($rs)['num'];
                         echo "<li class='row'>";
-                        echo "<a class='title' href='thread.php?thread=".$row["id"]."'>" .$row["title"]."</a>";
-                        echo "<div class='comment'> <p> created at:".$row["createAt"]."</p></div>";
+                        echo "<a class='title' href='thread.php?thread=".$row["id"]."'> ".$row["title"]."</a>";
+                        if ($yeah>2){
+                            echo "<img src='../trending.png'>";
+                        }
+                        if ($admin==1){
+                            echo "<button class='delete' value=".$row["id"]."> Delete </button>";
+                        }
+                        echo "<div class='top-comment'> <p>".$row["createdAt"]."</p></div>";
                         echo "</li>";
                         $threadCount++;
                     }
@@ -100,11 +129,19 @@ if (isset($_SESSION["user_id"])) {
                 else{
                     while ($row = mysqli_fetch_assoc($result)) {
                         // add list item to doc
-                        echo "<li class='row, title'>";
+                        //determine whether to 
+                        $sqlComment="SELECT count(threadId) as num  FROM comment where threadId='".$row["id"]."'";
+                        $rs = mysqli_query($mysqli,$sqlComment);
+                        $yeah= mysqli_fetch_assoc($rs)['num'];
+                        echo "<li class='row'>";
                         echo "<a class='title' href='thread.php?thread=".$row["id"]."'> ".$row["title"]."</a>";
-                        if ($admin==1){
-                            echo "<button id='btn' value=".$user["id"]."> Delete </button>";
+                        if ($yeah>2){
+                            echo "<img src='../trending.png'>";
                         }
+                        if ($admin==1){
+                            echo "<button class='delete' value=".$row["id"]."> Delete </button>";
+                        }
+                        echo "<div class='top-comment'> <p>".$row["createdAt"]."</p></div>";
                         echo "</li>";
                         $threadCount++;
                     }
@@ -117,30 +154,43 @@ if (isset($_SESSION["user_id"])) {
             </div>
         </div>
         <script>
-            setInterval(function() {
-                console.log("refreshing");
-                $("#threadDiv").load(location.href + " #threadDiv");
-            }, 5000);
-            let btn = document.getElementById("btn");
- 
-            // Adding event listener to button
-            btn.addEventListener("click", () => {
+            // setInterval(function() {
+            //     console.log("refreshing");
+            //     $("#threadDiv").load(location.href + " #threadDiv");
+            //     addListener();
+            // }, 10000);
             
+            // Adding event listener to button
+            addListener();
+            function addListener(){
+                let btn = document.querySelectorAll(".delete");
+                console.log(btn);
+                for (let i = 0; i < btn.length; i++) {
+                    btn[i].addEventListener("click", function(){
+                        let btnValue = btn[i].value;
+                        console.log(btnValue);
+                        // jQuery Ajax Post Request
+                        $.post('../mysql/delete.php', {
+                            btnValue: btnValue
+                        }, (response) => {
+                            alert("Thread deleted");
+                            location.reload();
+                        });
+                    })
+                    }
                 // Fetching Button value
-                let btnValue = btn.value;
-                
-                // jQuery Ajax Post Request
-                $.post('../mysql/delete.php', {
-                    btnValue: btnValue
-                }, (response) => {
-<<<<<<< Updated upstream
-                    alert("Thread deleted");
-=======
-                    // response from PHP back-end
-                    console.log(response);
->>>>>>> Stashed changes
-                });
-            });
+            }
+            // addFire();
+            function addFire(){
+                $(".title").each(function(i,obj){
+                    console.log(<?php echo $threadCount; ?>)
+                    if(<?php echo $threadCount; ?> >=3){
+                        console.log("fire")
+                        $(this).append($("<img src='../trending.png'>"));
+                    }
+                })
+                //$(".title").append($("<img src='../trending.png'>"));
+            }
         </script>
 </body>
 </html>

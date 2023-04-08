@@ -33,7 +33,69 @@
     // }
 ?>
 <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <link rel="stylesheet" href="../css/thread.css">
+    <style>
+        a:hover {
+        background-color: yellow;
+        }
+        .title{
+            padding:5px;
+            font-weight: bold;
+        }
+        .threadContent{
+            padding: 5px;
+        }
+        .comment{
+            margin: 0px 0px 0px;
+        }
+        .collapsible {
+            background-color: #a6a69d;
+            color: #444;
+            cursor: pointer;
+            padding:10px 0;
+            width: 25%;
+            border: 1px solid black;
+            border-radius: 5px;
+            text-align:  center;
+            outline: none;
+            font-size: 15px;
+            }
+        .active, .collapsible:hover {
+            background-color: #ccc;
+            }
+
+            /* Style the collapsible content. Note: hidden by default */
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #a6a69d;
+            }
+        .button {
+            background-color: grey; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            }
+        textarea {
+                margin-top: 20px;
+                width: 100%;
+                height: 100px;
+                border-radius: 3px;
+                border: 3px solid #11122b;
+                font-size: 1.5rem;
+                font-family: inherit;
+                color: inherit;
+                padding: 1.5rem 2rem;
+                transition: all 0.3s;
+            }
+    </style>
 </head>
 <body>
     <div class="top-bar">
@@ -67,84 +129,54 @@
             <?php 
                 if (!$thread){
                     die("<h1> Error retrieving thread information</h1>");
-                    
                 }
                 echo "<h2 class='title'>".$thread["title"]."</h2>";
-                echo "<p>".$thread["content"]."</p>";
-                echo "<div class='bottom'> by ".$thread["authorName"] ."</div>";
+                echo "<p class='threadContent'>".$thread["content"]."</p>";
+                echo "<button type='button' class='collapsible'>Open Comments <img class='comment' src='../comment.png'></button>";
+                
+                echo "<div class='content'>";
+            
+                // echo "<div class='bottom'> by ".$thread["authorName"] ."</div>";
                 while ($row = mysqli_fetch_assoc($resultComments)) {
                     // add list item to doc
                     echo "<div class='comment'> <div class='top-comment'>";
                     echo "<p class='user'> by ".$row["authorName"]."</p></div>";
                     echo "<div class='comment-content'>".$row["content"]."</div></div>";
                 }
+                echo "</div>";
             ?>
             </div>
                 <?php if (isset($user)): ?>
                     <form action="../mysql/newComment.php?threadId=<?php echo $threadId?>" method="POST">
                         <textarea name="comment" required></textarea>
-                        <button for="submit">add comment</button>
+                        <button class="button" for="submit">add comment</button>
                     </form>
                     
                 <?php endif; ?>
                 <div class="comments">
+                </div>
             </div>
-        </div>
     <script>
-        // var id = window.location.search.slice(1);
-        // var thread = threads.find(t => t.id == id);
-        // var header = document.querySelector('.header');
-        // var headerHtml = `
-        //     <h4 class="title">
-        //         ${thread.title}
-        //     </h4>
-        //     <div class="bottom">
-        //         <p class="timestamp">
-        //             ${new Date(thread.date).toLocaleString()}
-        //         </p>
-        //         <p class="comment-count">
-        //             ${thread.comments.length} comments
-        //         </p>
-        //     </div>
-        // `
-        // header.insertAdjacentHTML('beforeend', headerHtml)
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
 
-        // function addComment(comment) {
-        //     var commentHtml = `
-        //         <div class="comment">
-        //             <div class="top-comment">
-        //                 <p class="user">
-        //                     ${comment.author}
-        //                 </p>
-        //                 <p class="comment-ts">
-        //                     ${new Date(comment.date).toLocaleString()}
-        //                 </p>
-        //             </div>
-        //             <div class="comment-content">
-        //                 ${comment.content}
-        //             </div>
-        //         </div>
-        //     `
-        //     comments.insertAdjacentHTML('beforeend', commentHtml);
-        // }
-
-        // var comments = document.querySelector('.comments');
-        // for (let comment of thread.comments) {
-        //     addComment(comment);
-        // }
-
-        // var btn = document.querySelector('button');
-        // btn.addEventListener('click', function() {
-        //     var txt = document.querySelector('textarea');
-        //     var comment = {
-        //         content: txt.value,
-        //         date: Date.now(),
-        //         author: 'Aaron'
-        //     }
-        //     addComment(comment);
-        //     txt.value = '';
-        //     thread.comments.push(comment);
-        //     localStorage.setItem('threads', JSON.stringify(threads));
-        // })
+        for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            if (this.classList[1]){
+                this.innerHTML= 'Close Comments';
+            }
+            else{
+                this.innerHTML= 'Open Comments ';
+                $(this).append("<img class='comment' src='../comment.png'>")
+            }
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+            content.style.display = "none";
+            } else {
+            content.style.display = "block";
+            }
+        });
+        }
     </script>
 </body>

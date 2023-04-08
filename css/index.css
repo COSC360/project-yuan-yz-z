@@ -8,6 +8,11 @@ a {
 h1, h4, ol {
   margin: 0;
 }
+.top-comment {
+  display: flex;
+  color: grey;
+  font-size: 14px;
+}
 p {
   margin: 5px 0;
 }
